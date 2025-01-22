@@ -6,7 +6,7 @@ let deltaTime = 0;
 
 let playerState = 'idle';
 
-//get option from html
+//standard method to link to html
 const dropdown = document.getElementById('animations');
 dropdown.addEventListener('change', function(e){
     playerState = e.target.value;
