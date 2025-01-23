@@ -35,7 +35,6 @@ class Explosion {
         ctx.drawImage(this.image, this.spriteWidth * this.frame, 0, this.spriteWidth, this.spriteHeight, this.x, this.y, this.width, this.height);
     }
 }
-
 window.addEventListener('click', function(e){
     createAnimation(e);
 });
@@ -45,7 +44,6 @@ function createAnimation(e){
     let positionY = e.y - canvasPosition.top;
     explosions.push(new Explosion(positionX, positionY));
 }
-
 function animate(){
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     for (let i = 0; i < explosions.length; i++){
