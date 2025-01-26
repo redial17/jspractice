@@ -1,3 +1,8 @@
+/*
+Upon restart, chances are that player will not correctly loaded
+*/
+
+
 /**@type {HTMLCanvasElement} */
 window.addEventListener('load', function(){
     const canvas = this.document.getElementById('canvas1');
@@ -6,22 +11,25 @@ window.addEventListener('load', function(){
     canvas.height = 720;
     let score = 0;
     let gameOver = false;
+
     class InputHandler {
         constructor(){
             this.keys = [];
+            this.keyboradKeys = [];
+            this.gamepadKeys = [];
+            this.gamepad;
             window.addEventListener('keydown', e => {
                 if ((e.key === 'w' ||
                     e.key === 'a' ||
                     e.key === 's' ||
                     e.key === 'd' ||
                     e.key === ' ' )
-                    && this.keys.indexOf(e.key) === -1){
-                    this.keys.push(e.key);
+                    && this.keyboradKeys.indexOf(e.key) === -1){
+                    this.keyboradKeys.push(e.key);
                 }
                 else if(e.key === 'Enter' && gameOver){
                     restartGame();
                 }
-                console.log(this.keys, e.key);
             });
             window.addEventListener('keyup', e => {
                 if  (e.key === 'w' ||
@@ -29,9 +37,47 @@ window.addEventListener('load', function(){
                     e.key === 's' ||
                     e.key === 'd' ||
                     e.key === ' ' ){
-                    this.keys.splice(this.keys.indexOf(e.key), 1);
+                    this.keyboradKeys.splice(this.keyboradKeys.indexOf(e.key), 1);
                 }
             });
+            window.addEventListener('gamepadconnected',(e) =>{
+                this.gamepad = e.gamepad;
+            });
+
+            window.addEventListener('gamepaddisconnected', (e)=>{
+                this.gamepad = null;
+            });
+        }
+
+        updateGamepad() {
+            if (this.gamepad) {
+                const gamepads = navigator.getGamepads();
+                const gamepad = gamepads[this.gamepad.index];
+                gamepad.buttons
+    
+                if (gamepad) {
+                    const axisX = gamepad.axes[0];
+    
+                    if (axisX > 0.5 && !this.gamepadKeys.includes('d') ) {
+                        this.gamepadKeys.push('d');
+                    }
+                    else if(axisX < -0.5 && !this.gamepadKeys.includes('a')){
+                        this.gamepadKeys.push('a');
+                    } 
+                    else if (Math.abs(axisX) < 0.5 && (this.gamepadKeys.includes('a') || this.gamepadKeys.includes('d'))) {
+                        this.gamepadKeys.splice(this.gamepadKeys.indexOf('a'), 1);
+                        this.gamepadKeys.splice(this.gamepadKeys.indexOf('d'), 1);
+                    }
+
+                    if(gamepad.buttons[0].pressed && !this.gamepadKeys.includes(' ')){
+                        this.gamepadKeys.push(' ');
+                    }
+                    else if(!gamepad.buttons[0].pressed && this.gamepadKeys.includes(' ')){
+                        this.gamepadKeys.splice(this.gamepadKeys.indexOf(' '), 1);
+                    }
+                }
+            }
+            this.keys = [...new Set([...this.keyboradKeys, ...this.gamepadKeys])];
         }
     }
 
@@ -62,14 +108,14 @@ window.addEventListener('load', function(){
             this.frameY = 0;
         }
         draw(context){
-            context.strokeStyle = 'white';
-            context.beginPath();
-            context.arc(this.x+this.width/2, this.y + this.height/2, this.width/2, 0, Math.PI*2);
-            context.stroke();
-            context.strokeStyle = 'blue';
-            context.beginPath();
-            context.arc(this.x, this.y, this.width/2, 0, Math.PI*2);
-            context.stroke();
+            // context.strokeStyle = 'white';
+            // context.beginPath();
+            // context.arc(this.x+this.width/2, this.y + this.height/2, this.width/2, 0, Math.PI*2);
+            // context.stroke();
+            // context.strokeStyle = 'blue';
+            // context.beginPath();
+            // context.arc(this.x, this.y, this.width/2, 0, Math.PI*2);
+            // context.stroke();
             context.drawImage(this.image, this.frameX * this.width, this.frameY * this.height, this.width, this.height, this.x, this.y, this.width, this.height);
         }
         update(input, deltaTime, enemies){
@@ -200,14 +246,14 @@ window.addEventListener('load', function(){
             }
         }
         draw(context){
-            context.strokeStyle = 'white';
-            context.beginPath();
-            context.arc(this.x+this.width/2, this.y + this.height/2, this.width/2, 0, Math.PI*2);
-            context.stroke();
-            context.strokeStyle = 'blue';
-            context.beginPath();
-            context.arc(this.x, this.y, this.width/2, 0, Math.PI*2);
-            context.stroke();
+            // context.strokeStyle = 'white';
+            // context.beginPath();
+            // context.arc(this.x+this.width/2, this.y + this.height/2, this.width/2, 0, Math.PI*2);
+            // context.stroke();
+            // context.strokeStyle = 'blue';
+            // context.beginPath();
+            // context.arc(this.x, this.y, this.width/2, 0, Math.PI*2);
+            // context.stroke();
             context.drawImage(this.image, this.frameX * this.width, 0, this.width, this.height, this.x, this.y, this.width, this.height);
         }
 
@@ -264,8 +310,10 @@ window.addEventListener('load', function(){
     let enemyInterval = 2;
 
     function animate(timestamp){
+        input.updateGamepad();
         const deltaTime = (timestamp - lastTime)/1000;
         lastTime = timestamp;
+
         ctx.clearRect(0, 0, canvas.width, canvas.height);
         background.update(deltaTime);
         background.draw(ctx,deltaTime);
