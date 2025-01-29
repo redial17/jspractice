@@ -1,5 +1,5 @@
 /*
-Upon restart, chances are that player will not correctly loaded
+Upon restart, chances are that player will not correctly be loaded
 */
 
 
