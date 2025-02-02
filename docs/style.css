@@ -4,13 +4,8 @@
     box-sizing: border-box;
 }
 
-
-body {
-    background: black;
-}
-
 #canvas1 {
-    border: 5px solid white;
+    border: 5px solid black;
     position: absolute;
     top: 50%;
     left: 50%;
@@ -19,6 +14,6 @@ body {
     max-height: 100%;
 }
 
-#playerImage, #backgroundImage, #enemyImage {
+#player, #layer1, #layer2, #layer3, #layer4, #layer5, #enemy_fly, #enemy_plant, #enemy_spider_big, #fire, #collisionAnimation {
     display: none;
 }
