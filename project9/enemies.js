@@ -4,7 +4,6 @@ class Enemy {
         this.frameY = 0;
         this.fps = 20;
         this.frameInterval = 1/this.fps;
-        console.log(this.frameInterval);
         this.frameTimer = 0;
         this.markedForDeletion = false;
     }

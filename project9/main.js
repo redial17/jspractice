@@ -5,7 +5,6 @@ import { FlyingEnemy, GroundEnemy, ClimbingEnemy } from './enemies.js';
 import { UI } from './UI.js';
 
 window.addEventListener('load', function(){
-    console.log('ahsdiofao');
     const canvas = document.getElementById('canvas1');
     const ctx = canvas.getContext('2d');
     canvas.width = 500;
@@ -27,11 +26,12 @@ window.addEventListener('load', function(){
             this.maxParticles = 50;
             this.enemyInterval = 0.5;
             this.enemyTimer = 0;
-            this.debug = true;
+            this.debug = false;
             this.score = 0;
             this.fontColor = 'black';
             this.time = 0;
-            this.maxTime = 10;
+            //set game time here
+            this.maxTime = 100000;
             this.gameOver = false;
             this.player.currentState = this.player.states[0];
             this.player.currentState.enter();

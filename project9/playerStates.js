@@ -119,7 +119,6 @@ export class Rolling extends State {
     }
     handleInput(input){
         this.game.particles.unshift(new Fire(this.game, this.game.player.x + this.game.player.width/2, this.game.player.y + this.game.player.height/2));
-        console.log(this.game.particles);
         if (!input.includes('Enter') && this.game.player.onGround()){
             this.game.player.setState(states.RUNNING, 100);
         }
@@ -147,7 +146,6 @@ export class Diving extends State {
     }
     handleInput(input){
         this.game.particles.unshift(new Fire(this.game, this.game.player.x + this.game.player.width/2, this.game.player.y + this.game.player.height/2));
-        console.log(this.game.particles);
         if (this.game.player.onGround()){
             this.game.player.setState(states.RUNNING, 100);
             for(let i = 0; i < 30; i++){
