@@ -1,4 +1,4 @@
-import { Dust, Fire } from "./particles.js";
+import { Dust, Fire, Splash} from "./particles.js";
 
 const states = {
     SITTING: 0,
@@ -47,7 +47,7 @@ export class Running extends State {
     enter(){
         this.frameX = 0;
         this.game.player.frameY = 3;
-        this.game.player.maxFrame = 6;
+        this.game.player.maxFrame = 8;
     }
     handleInput(input){
         this.game.particles.unshift(new Dust(this.game, this.game.player.x + this.game.player.width/2, this.game.player.y + this.game.player.height));
@@ -123,11 +123,14 @@ export class Rolling extends State {
         if (!input.includes('Enter') && this.game.player.onGround()){
             this.game.player.setState(states.RUNNING, 100);
         }
-        if (!input.includes('Enter') && !this.game.player.onGround()){
+        else if (!input.includes('Enter') && !this.game.player.onGround()){
             this.game.player.setState(states.FALLING, 100);
         }
-        if (input.includes(' ') && this.game.player.onGround()){
+        else if (input.includes(' ') && this.game.player.onGround()){
             this.game.player.setState(states.JUMPING, 100);
+        }
+        else if (input.includes('s') && !this.game.player.onGround()){
+            this.game.player.setState(states.DIVING, 100);
         }
     }
 }
@@ -147,9 +150,31 @@ export class Diving extends State {
         console.log(this.game.particles);
         if (this.game.player.onGround()){
             this.game.player.setState(states.RUNNING, 100);
+            for(let i = 0; i < 30; i++){
+                this.game.particles.unshift(new Splash(this.game, this.game.player.x, this.game.player.y));
+            }
         }
         if (input.includes('Enter') && this.game.player.onGround()){
             this.game.player.setState(states.ROLLING, 100);
+        }
+    }
+}
+
+export class Hit extends State {
+    constructor(game){
+        super('HIT', game);
+    }
+    enter(){
+        this.frameX = 0;
+        this.game.player.frameY = 4;
+        this.game.player.maxFrame = 10;
+    }
+    handleInput(input){
+        if (this.game.player.frameX >= 10 && this.game.player.onGround()){
+            this.game.player.setState(states.RUNNING, 100);
+        }
+        else if (this.game.player.frameX >= 10 && this.game.player.onGround()){
+            this.game.player.setState(states.FALLING, 100);
         }
     }
 }
