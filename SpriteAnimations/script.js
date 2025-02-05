@@ -10,7 +10,7 @@ let playerState = 'idle';
 const dropdown = document.getElementById('animations');
 dropdown.addEventListener('change', function(e){
     playerState = e.target.value;
-})
+});
 
 const canvas = document.getElementById('canvas1');
 const ctx = canvas.getContext('2d');
