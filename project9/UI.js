@@ -32,6 +32,13 @@ export class UI {
             }
 
         }
+        //pause game message
+        if (this.game.pause){
+                context.textAlign = 'center';
+                context.font = this.fontSize * 2 + ' px' + this.fontFamily;
+                context.fillText('PAUSE', this.game.width * 0.5, this.game.height * 0.5);
+
+        }
         context.restore();
     }
 

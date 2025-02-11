@@ -35,6 +35,7 @@ window.addEventListener('load', function(){
             this.gameOver = false;
             this.player.currentState = this.player.states[0];
             this.player.currentState.enter();
+            this.pause = false;
         }
 
         update(deltaTime){

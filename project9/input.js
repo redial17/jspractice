@@ -6,6 +6,7 @@ export class InputHandler {
         this.gamepadKeys = [];
         this.gamepad;
         window.addEventListener('keydown', e => {
+            console.log(e.key);
             if ((e.key === 'w' ||
                 e.key === 'a' ||
                 e.key === 's' ||
@@ -16,6 +17,10 @@ export class InputHandler {
                 this.keyboradKeys.push(e.key);
             }else if(e.key === 'q'){
                 this.game.debug = !this.game.debug;
+            }
+            else if(e.key === 'Escape'){
+                //pause the game
+                this.game.pause = !this.game.pause;
             }
         });
         window.addEventListener('keyup', e => {
@@ -41,7 +46,6 @@ export class InputHandler {
         if (this.gamepad) {
             const gamepads = navigator.getGamepads();
             const gamepad = gamepads[this.gamepad.index];
-            gamepad.buttons
 
             if (gamepad) {
                 const axisX = gamepad.axes[0];
